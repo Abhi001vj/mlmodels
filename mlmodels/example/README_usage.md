@@ -1,310 +1,103 @@
-# mlmodels : Model ZOO for Pytorch, Tensorflow, Keras, Gluon, LightGBM, Sklearn models...
-
-- Model ZOO with Lightweight Functional interface to wrap access to Recent and State of Art Deep Learning, ML models and Hyper-Parameter Search, cross platforms such as Tensorflow, Pytorch, Gluon, Keras, sklearn, light-GBM,...
-
-- Logic follows sklearn : fit, predict, transform, metrics, save, load
-
-- Goal is to transform Script/Research code into Re-usable/batch/ code with minimal code change ...
-
-- Why Functional interface instead of pure OOP ?
-  Functional reduces the amount of code needed, focus more on the computing part (vs design part),
-  a bit easier maintenability for medium size project, good for scientific computing process.
-
-
-*  Usage, Example :
-https://github.com/arita37/mlmodels/blob/dev/mlmodels/example/README_usage.md
-
-
-*  Colab demo for Install :
-https://colab.research.google.com/drive/1sYbrXNZh9nTeizS-AuCA8RSu94B_B-RF
-
-
-## Model List :
-
-
-### Time Series:
-Nbeats: 2019, Time Series NNetwork,  https://arxiv.org/abs/1905.10437
-
-Amazon Deep AR: 2019, Time Series NNetwork,  https://arxiv.org/abs/1905.10437
-
-Facebook Prophet 2017, Time Series prediction,
-
-ARMDN Advanced Time series Prediction :  2019, Associative and Recurrent Mixture Density Networks for time series.
-
-LSTM prediction 
-
-
-
-### NLP :
-Sentence Transformers : 2019, Embedding of full sentences using BERT, https://arxiv.org/pdf/1908.10084.pdf
-
-Transformers Classifier : Using Transformer for Text Classification, https://arxiv.org/abs/1905.05583
-
-TextCNN Pytorch : 2016, Text CNN Classifier, https://arxiv.org/abs/1801.06287
-
-TextCNN Keras : 2016, Text CNN Classifier, https://arxiv.org/abs/1801.06287
-
-charCNN Keras : Text Character Classifier,
-
-
-DRMM: this model is an implementation of A Deep Relevance Matching Model for Ad-hoc Retrieval.
-
-DRMMTKS: this model is an implementation of A Deep Top-K Relevance Matching Model for Ad-hoc Retrieval.
-
-ARC-I: this model is an implementation of Convolutional Neural Network Architectures for Matching Natural Language Sentences
-
-ARC-II: this model is an implementation of Convolutional Neural Network Architectures for Matching Natural Language Sentences
-
-DSSM: this model is an implementation of Learning Deep Structured Semantic Models for Web Search using Clickthrough Data
-
-CDSSM: this model is an implementation of Learning Semantic Representations Using Convolutional Neural Networks for Web Search
-
-MatchLSTM:this model is an implementation of Machine Comprehension Using Match-LSTM and Answer Pointer
-
-DUET: this model is an implementation of Learning to Match Using Local and Distributed Representations of Text for Web Search
-
-KNRM: this model is an implementation of End-to-End Neural Ad-hoc Ranking with Kernel Pooling
-
-ConvKNRM: this model is an implementation of Convolutional neural networks for soft-matching n-grams in ad-hoc search
-
-ESIM: this model is an implementation of Enhanced LSTM for Natural Language Inference
-
-BiMPM: this model is an implementation of Bilateral Multi-Perspective Matching for Natural Language Sentences
-
-MatchPyramid: this model is an implementation of Text Matching as Image Recognition
-
-Match-SRNN: this model is an implementation of Match-SRNN: Modeling the Recursive Matching Structure with Spatial RNN
-
-aNMM: this model is an implementation of aNMM: Ranking Short Answer Texts with Attention-Based Neural Matching Model
-
-MV-LSTM: this model is an implementation of A Deep Architecture for Semantic Matching with Multiple Positional Sentence Representations
-
-DIIN: this model is an implementation of Natural Lanuguage Inference Over Interaction Space
-
-HBMP: this model is an implementation of Sentence Embeddings in NLI with Iterative Refinement Encoders
-
-
-
-
-### TABULAR :
-#### LightGBM
-
-#### AutoML Gluon  :  2020, AutoML in Gluon, MxNet using LightGBM, CatBoost
-
-
-#### All sklearn models :
-
-linear_model.ElasticNet\
-linear_model.ElasticNetCV\
-linear_model.Lars\
-linear_model.LarsCV\
-linear_model.Lasso\
-linear_model.LassoCV\
-linear_model.LassoLars\
-linear_model.LassoLarsCV\
-linear_model.LassoLarsIC\
-linear_model.OrthogonalMatchingPursuit\
-linear_model.OrthogonalMatchingPursuitCV\
-
-
-svm.LinearSVC\
-svm.LinearSVR\
-svm.NuSVC\
-svm.NuSVR\
-svm.OneClassSVM\
-svm.SVC\
-svm.SVR\
-svm.l1_min_c\
-
-
-neighbors.KNeighborsClassifier\
-neighbors.KNeighborsRegressor\
-neighbors.KNeighborsTransformer\
-
-
-
-
-
-#### Binary Neural Prediction from tabular data:
-
-A Convolutional Click Prediction Model](http://ir.ia.ac.cn/bitstream/173211/12337/1/A%20Convolutional%20Click%20Prediction%20Model.pdf)             |
-
-Deep Learning over Multi-field Categorical Data: A Case Study on User Response Prediction](https://arxiv.org/pdf/1601.02376.pdf)                    |
-
-Product-based neural networks for user response prediction](https://arxiv.org/pdf/1611.00144.pdf)                                                   |
-
-Wide & Deep Learning for Recommender Systems](https://arxiv.org/pdf/1606.07792.pdf)                                                                 |
-
-DeepFM: A Factorization-Machine based Neural Network for CTR Prediction](http://www.ijcai.org/proceedings/2017/0239.pdf)                           |
-
-Learning Piece-wise Linear Models from Large Scale Data for Ad Click Prediction](https://arxiv.org/abs/1704.05194)                                 |
-
-Deep & Cross Network for Ad Click Predictions](https://arxiv.org/abs/1708.05123)                                                                   |
-
-Attentional Factorization Machines: Learning the Weight of Feature Interactions via Attention Networks](http://www.ijcai.org/proceedings/2017/435) |
-
-Neural Factorization Machines for Sparse Predictive Analytics](https://arxiv.org/pdf/1708.05027.pdf)                                               |
-
-xDeepFM: Combining Explicit and Implicit Feature Interactions for Recommender Systems](https://arxiv.org/pdf/1803.05170.pdf)                         |
-
-AutoInt: Automatic Feature Interaction Learning via Self-Attentive Neural Networks](https://arxiv.org/abs/1810.11921)                              |
-
-Deep Interest Network for Click-Through Rate Prediction](https://arxiv.org/pdf/1706.06978.pdf)                                                       |
-
-Deep Interest Evolution Network for Click-Through Rate Prediction](https://arxiv.org/pdf/1809.03672.pdf)                                            |
-
-Operation-aware Neural Networks for User Response Prediction](https://arxiv.org/pdf/1904.12579.pdf)                                                |
-
-Feature Generation by Convolutional Neural Network for Click-Through Rate Prediction ](https://arxiv.org/pdf/1904.04447)                             |
-
-Deep Session Interest Network for Click-Through Rate Prediction ](https://arxiv.org/abs/1905.06482)                                                |
-
-FiBiNET: Combining Feature Importance and Bilinear feature Interaction for Click-Through Rate Prediction](https://arxiv.org/pdf/1905.09433.pdf)   |
-
-
-
-
-### VISION :
-  Vision Models (pre-trained) :  
-alexnet\
-densenet121\
-densenet169\
-densenet201\
-densenet161\
-inception_v3\
-resnet18\
-resnet34\
-resnet50\
-resnet101\
-resnet152\
-
-resnext50_32x4d\
-resnext101_32x8d\
-
-wide_resnet50_2\
-wide_resnet101_2\
-squeezenet1_0
-
-squeezenet1_1\
-vgg11\
-vgg13\
-vgg16\
-vgg19\
-vgg11_bn
-
-vgg13_bn\
-vgg16_bn\
-vgg19_bn
-
-googlenet\
-shufflenet_v2_x0_5\
-shufflenet_v2_x1_0\
-mobilenet_v2
-
-A lot more...
-
-
-
-......
-
-https://github.com/arita37/mlmodels/blob/dev/README_model_list.md
-
-######################################################################################
-
-## ① Installation
-
-Using pre-installed online Setup :
+## Usage with Online Editor
+  Pre-Installed setup
 
 https://github.com/arita37/mlmodels/issues/101
 
 
 
-Manual Install as editable package in Linux
+#
+#
+
+## Steps to add a new Colab notebook /Jupyter notebook :
 
 ```
-conda create -n py36 python=3.6.5 -y
-source activate py36
+0) Check existing examples
+    https://github.com/arita37/mlmodels/tree/dev/mlmodels/example
 
-cd yourfolder
-git clone https://github.com/arita37/mlmodels.git mlmodels
-cd mlmodels
-git checkout dev
+
+1) Create a branch from DEV branch called : notebook_
+
+2) Create Jupyter Notebook in  mlmodels/example/           
+            
+3) Create mymodel.json in  mlmodels/example/
+ 
+4)  Do Pull Request to dev Branch.
+
 ```
 
-### Check this Colab for install :
-https://colab.research.google.com/drive/1sYbrXNZh9nTeizS-AuCA8RSu94B_B-RF
 
 
-##### Initialize
-Will copy template, dataset, example to your folder
+## Existing JSON definition for models :
 
-    ml_models --init  /yourworkingFolder/
+  https://github.com/arita37/mlmodels/tree/dev/mlmodels/dataset/json
 
-
-##### To test :
-    ml_optim
+  https://github.com/arita37/mlmodels/tree/dev/mlmodels/example/
 
 
-##### To test model fitting
-    ml_models
-    
-        
-#### Actual test runs
+  #### Access to json files inside mlmodels :
+```python
 
-https://github.com/arita37/mlmodels/actions
+from mlmodels.util import path_norm_dict, path_norm
 
-![test_fast_linux](https://github.com/arita37/mlmodels/workflows/test_fast_linux/badge.svg)
+print( path_norm( 'example/hyper_titanic_randomForest.json'  ) )
+  ###  --> /home/ubuntu/mlmodels/example/hyper ...
 
-![test_fast_windows](https://github.com/arita37/mlmodels/workflows/test_fast_windows/badge.svg?branch=dev)
+print( path_norm( 'dataset/text/mytest.txt'  ) )
+  ###  --> /home/ubuntu/mlmodels/dataset/text ...
 
-![ All model testing (Linux) ](https://github.com/arita37/mlmodels/workflows/code_structure_linux/badge.svg)
-
-#######################################################################################
-
-## Usage in Jupyter
-
-https://github.com/arita37/mlmodels/blob/dev/README_usage.md
-
-#######################################################################################
-
-## CLI tools:
-
-https://github.com/arita37/mlmodels/blob/dev/README_usage_CLI.md
+```
 
 
 
-####################################################################################
+## Example of sample cripts
+https://github.com/arita37/mlmodels/blob/dev/mlmodels/example/arun_hyper.py
 
-## Model List
+https://github.com/arita37/mlmodels/blob/dev/mlmodels/example/arun_model.py
 
-https://github.com/arita37/mlmodels/blob/dev/README_model_list.md
 
-#######################################################################################
 
-## How to add a new model
+#
+#
 
-https://github.com/arita37/mlmodels/blob/dev/README_addmodel.md
 
-#######################################################################################
 
-## Index of functions/methods
 
-https://github.com/arita37/mlmodels/blob/dev/README_index_doc.txt
+## Example of notebooks
 
-####################################################################################
+
+
+### Progressive GAN , Image Generation with mlmodels
+
+https://github.com/arita37/mlmodels/issues/168
 
 
 
 
 
 
+### Hyper-Parameter with LightGBM, Ex 1
+
+https://github.com/arita37/mlmodels/blob/dev/mlmodels/example/model_lightgbm_home_retail.ipynb
+
+#
+
+---
+
+### Hyper-Parameter with LightGBM , Ex 2
+
+https://github.com/arita37/mlmodels/blob/dev/mlmodels/example/model_lightgbm_glass.ipynb
+
+
+#
+---
+### Hyper-Parameter with LightGBM , Ex 3
+
+https://github.com/arita37/mlmodels/blob/dev/mlmodels/example/model_lightgbm_titanic.ipynb
 
 
 
-
-
-
-
+#
+---
 
 
 
@@ -348,7 +141,7 @@ ypred         = module.predict(model, sess,  data_pars, compute_pars, out_pars) 
 ---
 
 ### AutoML example in Gluon ([Example notebook](mlmodels/example/gluon_automl.ipynb))
-```
+```python
 # import library
 import mlmodels
 import autogluon as ag
@@ -398,7 +191,7 @@ ypred       = module.predict(model, data_pars, compute_pars, out_pars)     # pre
 ---
 
 ### RandomForest example in Scikit-learn ([Example notebook](mlmodels/example/sklearn.ipynb))
-```
+```python
 # import library
 import mlmodels
 
@@ -697,17 +490,23 @@ import json
 #### Load model and data definitions from json
 # Model defination
 model_uri    = "model_sklearn.model_lightgbm.py"
-module        =  module_load( model_uri= model_uri)
-
-# Path to JSON
 data_path = '../dataset/json/lightgbm_titanic.json'  
+
 
 # Model Parameters
 pars = json.load(open( data_path , mode='r'))
 for key, pdict in  pars.items() :
   globals()[key] = path_norm_dict( pdict   )   ###Normalize path
 
+model_pars      = test['model_pars']
+data_pars       = test['data_pars']
+compute_pars    = test['compute_pars']
+out_pars        = test['out_pars']
+
+
+
 #### Load Parameters and Train
+module        =  module_load( model_uri= model_uri)
 model = module.Model(model_pars, data_pars, compute_pars) # create model instance
 model, session = module.fit(model, data_pars, compute_pars, out_pars) # fit model
 
@@ -729,6 +528,8 @@ metrics_val
 
 
 ### Using Vision CNN RESNET18 for MNIST dataset  ([Example notebook](mlmodels/example/model_restnet18.ipynb), [JSON file](mlmodels/model_tch/torchhub_cnn.json))
+
+
 
 ```python
 # import library
@@ -755,7 +556,7 @@ print( hypermodel_pars, model_pars, data_pars, compute_pars, out_pars)
 #### Setup Model 
 module         = module_load( model_uri)
 model          = module.Model(model_pars, data_pars, compute_pars) 
-`
+
 #### Fit
 model, session = module.fit(model, data_pars, compute_pars, out_pars)           #### fit model
 metrics_val    = module.fit_metrics(model, data_pars, compute_pars, out_pars)   #### Check fit metrics
@@ -802,7 +603,7 @@ print( hypermodel_pars, model_pars, data_pars, compute_pars, out_pars)
 #### Setup Model 
 module         = module_load( model_uri)
 model          = module.Model(model_pars, data_pars, compute_pars) 
-`
+
 #### Fit
 model, session = module.fit(model, data_pars, compute_pars, out_pars)           #### fit model
 metrics_val    = module.fit_metrics(model, data_pars, compute_pars, out_pars)   #### Check fit metrics
@@ -824,6 +625,21 @@ model2 = module.load(load_pars ={ 'path': out_pars['path'] +"/model/"})
 
 ```
 ---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
