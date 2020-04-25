@@ -6,12 +6,8 @@ import re
 from pathlib import Path
 import json
 
-
-"""
-from mlmodels.util import (os_package_root_path, log, path_norm
-    config_load_root, config_path_pretrained, config_path_dataset, config_set
-    )
-"""
+import importlib
+from inspect import getmembers
 
 
 ####################################################################################################
@@ -30,6 +26,25 @@ def log(*s, n=0, m=1):
 
 
 ####################################################################################################
+def get_device_torch():
+    import torch, numpy as np
+    if torch.cuda.is_available():
+        device = "cuda:{}".format(np.random.randint(torch.cuda.device_count()))
+    else:
+        device = "cpu"
+    print("use device", device)
+    return device
+
+
+
+
+def load_function(package="mlmodels.util", name="path_norm"):
+  import importlib
+  return  getattr(importlib.import_module(package), name)
+
+
+
+
 def os_folder_copy(src, dst):
     """Copy a directory structure overwriting existing files"""
     import shutil
@@ -134,6 +149,19 @@ def get_recursive_files(folderPath, ext='/*model*/*.py'):
 
 
 
+def json_norm(ddict):
+  """
+    String to Object for JSON on file
+
+
+  """  
+  for k,t in ddict.items(): 
+     if t == "None" :
+         ddict[k] = None
+  return ddict    
+         
+
+
 def path_norm(path=""):
     root = os_package_root_path(__file__, 0)
 
@@ -174,7 +202,7 @@ def os_package_root_path(filepath="", sublevel=0, path_add=""):
     import mlmodels, os, inspect 
 
     path = Path(inspect.getfile(mlmodels)).parent
-    print( path )
+    # print( path )
 
     # path = Path(os.path.realpath(filepath)).parent
     for i in range(1, sublevel + 1):
@@ -247,14 +275,15 @@ def config_set(ddict2):
 
 
 
-def params_json_load(path, config_mode="test"):
+def params_json_load(path, config_mode="test", 
+                     tlist= [ "model_pars", "data_pars", "compute_pars", "out_pars"] ):
     import json
     pars = json.load(open(path, mode="r"))
     pars = pars[config_mode]
 
     ### HyperParam, model_pars, data_pars,
     list_pars = []
-    for t in ["hypermodel_pars", "model_pars", "data_pars", "compute_pars", "out_pars"]:
+    for t in tlist :
         pdict = pars.get(t)
         if pdict:
             list_pars.append(pdict)
@@ -262,6 +291,12 @@ def params_json_load(path, config_mode="test"):
             log("error in json, cannot load ", t)
 
     return tuple(list_pars)
+
+
+
+
+
+
 
 
 
@@ -415,13 +450,11 @@ def load_tf(load_pars=""):
 
  """
   import tensorflow as tf
-  tf_graph = tf.Graph()
-  tf_sess = tf.Session(graph=tf_graph)
+  tf_sess = tf.compat.v1.Session() # tf.Session()
   model_path = os.path.join(load_pars['path'], "model")
-  with tf_graph.as_default():
-    new_saver = tf.train.import_meta_graph(f"{model_path}.meta")
-    new_saver.restore(tf_sess, tf.train.latest_checkpoint(str(Path(model_path).parent)))
-
+  saver = tf.compat.v1.train.Saver()
+  with  tf.compat.v1.Session() as sess:
+      saver.restore(tf_sess, model_path)
   return tf_sess
 
 
@@ -438,17 +471,22 @@ def load_tch(load_pars):
     import torch
     #path, filename = load_pars['path'], load_pars.get('filename', "model.pkl")
     #path = path + "/" + filename if "." not in path else path
-    path = load_pars['path']
+    if os.path.isdir(load_pars['path']):
+        path, filename = load_pars['path'], "model.pb"
+    else:
+        path, filename = os_path_split(load_pars['path'])
     model = Model_empty()
-    model.model = torch.load(path)
+    model.model = torch.load(Path(path) / filename)
     return model
 
 
 def save_tch(model=None, optimizer=None, save_pars=None):
     import torch
-    path, filename = os_path_split(save_pars['path'])
-    if not os.path.exists(path): 
-        os.makedirs(path, exist_ok=True)
+    if os.path.isdir(save_pars['path']):
+        path, filename = save_pars['path'], "model.pb"
+    else:
+        path, filename = os_path_split(save_pars['path'])
+    if not os.path.exists(path): os.makedirs(path, exist_ok=True)
 
     if save_pars.get('save_state') is not None:
         torch.save({
@@ -493,11 +531,13 @@ def load_pkl(load_pars):
 
 
 def save_pkl(model=None, session=None, save_pars=None):
-  import cloudpickle as pickle
-  path, filename = os_path_split(save_pars['path'])
-  if not os.path.exists(path): os.makedirs(path, exist_ok=True)
-  return pickle.dump(model, open( f"{path}/{filename}" , mode='wb') )
-
+    import cloudpickle as pickle
+    if os.path.isdir(save_pars['path']):
+        path, filename = save_pars['path'], "model.pkl"
+    else:
+        path, filename = os_path_split(save_pars['path'])
+    if not os.path.exists(path): os.makedirs(path, exist_ok=True)
+    return pickle.dump(model, open( f"{path}/{filename}" , mode='wb') )
 
 
 def load_keras(load_pars, custom_pars=None):
@@ -511,9 +551,12 @@ def load_keras(load_pars, custom_pars=None):
     path_file = path + "/" + filename if ".h5" not in path else path
     model = Model_empty()
     if custom_pars:
-        model.model = load_model(path_file, 
-                             custom_objects={"MDN": custom_pars["MDN"],
-                                             "mdn_loss_func": custom_pars["loss"]})
+        if custom_pars.get("custom_objects"):
+            model.model = load_model(path_file, custom_objects=custom_pars["custom_objects"])
+        else:
+            model.model = load_model(path_file,
+                                     custom_objects={"MDN": custom_pars["MDN"],
+                                                     "mdn_loss_func": custom_pars["loss"]})
     else:
         model.model = load_model(path_file)
     return model
@@ -547,9 +590,35 @@ def load_gluonts(load_pars=None):
 
 
 
-
-
-
+def load_callable_from_uri(uri):
+    assert(len(uri)>0 and ('::' in uri or '.' in uri))
+    if '::' in uri:
+        module_path, callable_name = uri.split('::')
+    else:
+        module_path, callable_name = uri.rsplit('.',1)
+    if os.path.isfile(module_path):
+        module_name = '.'.join(module_path.split('.')[:-1])
+        spec = importlib.util.spec_from_file_location(module_name, module_path)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+    else:
+        module = importlib.import_module(module_path)
+    return dict(getmembers(module))[callable_name]
+        
+def load_callable_from_dict(function_dict, return_other_keys=False):
+    function_dict = function_dict.copy()
+    uri = function_dict.pop('uri')
+    func = load_callable_from_uri(uri)
+    try:
+        assert(callable(func))
+    except:
+        raise TypeError(f'{func} is not callable')
+    arg = function_dict.pop('arg', {})
+    if not return_other_keys:
+        return func, arg
+    else:
+        return func, arg, function_dict
+    
 
 """
 def path_local_setup(current_file=None, out_folder="", sublevel=0, data_path="dataset/"):

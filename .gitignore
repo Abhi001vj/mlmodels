@@ -9,8 +9,11 @@ mlmodels/ztest/*
 zwork/*
 !zwork/*.ipny
 !zwork/*.py
-
-
+*ipynb_check*
+*zarchive.txt*
+*untitled*
+*README_index_doc.txt*
+*README_index_doc.md*
 
 # C extensions
 *.so
@@ -138,3 +141,7 @@ example/exp
 /functions.json
 .idea
 /classes.json
+/untitled.txt
+/README_index_doc
+/mlmodels/dataset/vision/FashionMNIST/processed
+/mlmodels/dataset/vision/FashionMNIST/raw

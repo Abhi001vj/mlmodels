@@ -423,7 +423,7 @@ def get_params(param_pars={}, **kw):
     if choice == "test01":
         log("#### Path params   ##########################################")
         data_path  = path_norm( "dataset/text/imdb.csv"  )   
-        out_path   = path_norm( "/ztest/model_keras/textcnn/" )   
+        out_path   = path_norm( "/ztest/model_tch/transformer_classifier/" )
         model_path = os.path.join(out_path , "model")
 
 
@@ -518,7 +518,7 @@ if __name__ == '__main__':
     VERBOSE = True
 
     # Constants 
-    param_pars = {'choice': "json", 'config_mode' : 'test', 'data_path' : './transformer_classifier.json' }
+    param_pars = {'choice': "json", 'config_mode' : 'test', 'data_path' : 'model_tch/transformer_classifier.json' }
     model_pars, data_pars, compute_pars, out_pars = get_params(param_pars)
     if os.path.exists(out_pars['output_dir']) and os.listdir(out_pars['output_dir']) and model_pars['do_train'] and not compute_pars['overwrite_output_dir']:
       raise ValueError("Output directory ({}) already exists and is not empty. Use --overwrite_output_dir to overcome.".format(out_pars['output_dir']))

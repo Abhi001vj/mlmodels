@@ -3,6 +3,14 @@ git+https://www.github.com/keras-team/keras-contrib.git
 mlflow==1.7.1
 
 
+
+### TF
+tensorflow-datasets==3.0
+
+
+### Lightning for GPU/TPu training
+pytorch-lightning==0.7.3
+
 ## Required for gluon_FB prophet
 fbprophet==0.6
 convertdate>=2.1.2
@@ -13,12 +21,19 @@ torchvision==0.4.0
 Pillow<7.0   ##Issue
 
 
-### transformers
+
+### transformers with 7.0
 pytorch-transformers
 ###transformers==2.4.1 #### fix issue #23 could not run on macos
 transformers==2.3.0 #### due to sentence transformers
 sentence-transformers==0.2.4
 tensorboardX
+
+
+### autokeras
+# autokeras==1.0.2
+# packaging==20.3
+
 
 
 ############################
@@ -54,6 +69,7 @@ torchtext
 nltk
 spacy
 gensim 
+matchzoo-py==1.1.1   #  pytorch-transformers >= 1.1.0, pytorch > 1.2.0
 
 
 #### Distributed training

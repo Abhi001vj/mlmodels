@@ -222,8 +222,9 @@ def test_api(model_uri="model_xxxx/yyyy.py", param_pars=None):
 
     log("#### Model init   ############################################")
     session = None
-    from mlmodels.models import model_create
-    model = model_create(module, model_pars, data_pars, compute_pars)
+    # model_sklearn change model_pars => could not init model in sequence or need get_params before
+    # from mlmodels.models import model_create
+    # model = model_create(module, model_pars, data_pars, compute_pars)
 
     module, model = module_load_full(model_uri, model_pars, data_pars, compute_pars)
 

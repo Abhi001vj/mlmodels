@@ -2,10 +2,83 @@
 """
 
 
+%tensorflow_version 2.x
+import tensorflow as tf
+print("Tensorflow version " + tf.__version__)
+
+try:
+  tpu = tf.distribute.cluster_resolver.TPUClusterResolver()  # TPU detection
+  print('Running on TPU ', tpu.cluster_spec().as_dict()['worker'])
+except ValueError:
+  raise BaseException('ERROR: Not connected to a TPU runtime; please see the previous cell in this notebook for instructions!')
+
+tf.config.experimental_connect_to_cluster(tpu)
+tf.tpu.experimental.initialize_tpu_system(tpu)
+tpu_strategy = tf.distribute.experimental.TPUStrategy(tpu)
+
+
+def create_model():
+  pretrained_model = tf.keras.applications.Xception(input_shape=[*IMAGE_SIZE, 3], include_top=False)
+  pretrained_model.trainable = True
+  model = tf.keras.Sequential([
+    pretrained_model,
+    tf.keras.layers.GlobalAveragePooling2D(),
+    tf.keras.layers.Dense(5, activation='softmax')
+  ])
+  model.compile(
+    optimizer='adam',
+    loss = 'categorical_crossentropy',
+    metrics=['accuracy']
+  )
+  return model
+
+with tpu_strategy.scope(): # creating the model in the TPUStrategy scope means we will train the model on the TPU
+  model = create_model()
+model.summary()
+
+
+with tpu_strategy.scope(): # creating the model in the TPUStrategy scope means we will train the model on the TPU
+   model = Model()
+
+
+
+
+###########
+    batch_size = compute_pars['batch_size']
+    epochs = compute_pars['epochs']
+
+    sess = None  #
+    Xtrain, Xtest, ytrain, ytest = get_dataset(data_pars)
+
+    # This address identifies the TPU we'll use when configuring TensorFlow.
+    TPU_WORKER = 'grpc://' + os.environ['COLAB_TPU_ADDR']
+
+
+    keras.backend.clear_session()
+
+    resolver = tf.contrib.cluster_resolver.TPUClusterResolver(TPU_WORKER)
+    tf.contrib.distribute.initialize_tpu_system(resolver)
+    strategy = tf.contrib.distribute.TPUStrategy(resolver)
+
+    with strategy.scope():
+    
+      model0.compile(
+          optimizer=tf.keras.optimizers.RMSprop(learning_rate=0.01),
+          loss='sparse_categorical_crossentropy',
+          metrics=['sparse_categorical_accuracy'])
+
+    model.model.fit(Xtrain, ytrain,
+                                  batch_size=batch_size,
+                                  epochs=epochs,
+                                  callbacks=[early_stopping],
+                                  validation_data=(Xtest, ytest))
+
+
+
+
 """
 import os
-
-
+import numpy as np
 from keras.callbacks import EarlyStopping
 
 
@@ -67,12 +140,25 @@ def fit(model, data_pars=None, compute_pars=None, out_pars=None, **kw):
     return model, sess
 
 
-def fit_metrics(model, session=None, data_pars=None, compute_pars=None, out_pars=None, **kw):
+
+
+
+def fit_metrics(model, data_pars=None, compute_pars=None, out_pars=None, **kw):
     """
        Return metrics ofw the model when fitted.
     """
+    from sklearn.metrics import accuracy_score
+    _,Xval,_, yval = get_dataset(data_pars)
+    ypred = model.model.predict(Xval)
+    metric_score_name = compute_pars.get('metric_score') 
+    if metric_score_name is None :
+        return {}
     ddict = {}
-
+    if metric_score_name == "accuracy_score":
+        ypred = ypred.argmax(axis=1)
+        yval = np.argmax(yval, axis=1)
+        score = accuracy_score(yval, ypred)
+        ddict[metric_score_name] = score
     return ddict
 
 
@@ -95,13 +181,13 @@ def reset_model():
     pass
 
 
-def save(model=None, session=None, save_pars={}):
+def save(model=None,  save_pars=None, session=None):
     from mlmodels.util import save_keras
     print(save_pars)
     save_keras(model, session, save_pars=save_pars)
 
 
-def load(load_pars={}):
+def load(load_pars=None):
     from mlmodels.util import load_keras
     model0 = load_keras(load_pars)
 
@@ -127,17 +213,19 @@ def get_dataset(data_pars=None, **kw):
                              alphabet       = data_pars["alphabet"],
                              input_size     = data_pars["input_size"],
                              num_of_classes = data_pars["num_of_classes"])
-        train_data.load_data()
-        train_inputs, train_labels = train_data.get_all_data()
+        if data_pars['type'] == "npz":
+            train_inputs,train_labels, val_inputs, val_labels = train_data.get_all_data_npz()
+        else: 
+            train_data.load_data()
+            train_inputs, train_labels = train_data.get_all_data()
 
-
-        # Load val data
-        val_data = Data(data_source = path_norm( data_pars["val_data_source"]) ,
-                               alphabet=data_pars["alphabet"],
-                               input_size=data_pars["input_size"],
-                               num_of_classes=data_pars["num_of_classes"])
-        val_data.load_data()
-        val_inputs, val_labels = val_data.get_all_data()
+            # Load val data
+            val_data = Data(data_source = path_norm( data_pars["val_data_source"]) ,
+                                   alphabet=data_pars["alphabet"],
+                                   input_size=data_pars["input_size"],
+                                   num_of_classes=data_pars["num_of_classes"])
+            val_data.load_data()
+            val_inputs, val_labels = val_data.get_all_data()
 
         return train_inputs, val_inputs, train_labels, val_labels
 
@@ -218,7 +306,7 @@ def get_params(param_pars={}, **kw):
 
 
 ################################################################################################
-########## Tests are  ##########################################################################
+########## Tests ###############################################################################
 def test(data_path="dataset/", pars_choice="json", config_mode="test"):
     ### Local test
     from mlmodels.util import path_norm
