@@ -203,8 +203,8 @@ def test_single(data_path="dataset/", pars_choice="json", config_mode="test"):
 def test() :
     ll = [ "vision" , "text" , "tabular_classifier" ]
 
-    # for t in ll  :
-    test_single(data_path="model_keras/Autokeras.json", pars_choice="json", config_mode="tabular_classifier")
+    for t in ll  :
+        test_single(data_path="model_keras/Autokeras.json", pars_choice="json", config_mode=t)
 
 
 
